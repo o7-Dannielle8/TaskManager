@@ -1,0 +1,194 @@
+﻿<Window x:Class="Loginfo.View.TaskDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Loginfo.ViewModel"
+        xmlns:local="clr-namespace:Loginfo.View"
+        mc:Ignorable="d"
+        Title="TaskDashboard" Height="1090" Width="1440"      
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Storyboard x:Key="SlideOnLoad">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0.0" To="1.0" Duration="0:0:1">
+            </DoubleAnimation>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                From="0,100,0,0" To="0,0,0,0" Duration="0:0:1">
+                <ThicknessAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid Opacity="1" Margin="0">
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource SlideOnLoad}"/>
+            </EventTrigger>
+        </Grid.Triggers>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="500" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="164" />
+        </Grid.ColumnDefinitions>
+
+        <!--Nav Panel-->
+        <Rectangle Fill="{StaticResource SideBar}"/>
+
+        <!--Nav Panel Grid-->
+        <StackPanel Margin="20">
+            <Button Width="45"
+                    Height="45"
+                    Margin="0 0 0 20"
+                    Style="{StaticResource NavButton}"/>
+            <Button Width="45"
+                    Height="45"
+                    Margin="0 0 0 20"
+                    Style="{StaticResource CompletedButton}"/>
+
+            <Button Width="45"
+                    Height="45"
+                    Margin="0 0 0 20"
+                    Style="{StaticResource OngoingButton}"/>
+        </StackPanel>
+        <Button Width="45"
+                Height="45"
+                Margin="0 0 0 20"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource SettingButton}"/>
+
+        <!--Task List BG-->
+        <Rectangle Fill="{StaticResource TaskListBG}"
+                   Grid.Column="1"/>
+
+        <!--Task List Grid-->
+        <Grid Grid.Column="1" Opacity="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="69" />
+                <RowDefinition Height="59" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <!--Task Label-->
+            <Label Style="{StaticResource Heading1}"
+                   Content="Tasks"
+                   VerticalAlignment="Center"
+                   Padding="16 0 0 0"
+                   IsHitTestVisible="False" />
+
+            <!--Add New Task Button-->
+            <Button Style="{StaticResource ButtonStyle}"
+                    Command="{Binding IOpenNewWindow}" Click="Button_Click">
+                Add Task
+            </Button>
+
+            <!--Search Task Bar-->
+            <TextBox x:Name="TaskSearchBox"
+                     Style="{StaticResource TaskListSearchBox}"
+                     Margin="16 0 16 0"
+                     Grid.Row="1"/>
+
+            <Label IsHitTestVisible="False"
+                   Content="Search Tasks..."
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   Margin="36 0 0 0"
+                   Background="Transparent"
+                   Foreground="{StaticResource TaskListBG}"
+                   FontSize="18"
+                   Visibility="{Binding Text.IsEmpty, ElementName=TaskSearchBox, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <Button Grid.Row="1"
+                    Style="{StaticResource SearchButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0 0 40 0"
+                    Padding="10"
+                    Background="Transparent"
+                    BorderBrush="Transparent">
+                🔍
+            </Button>
+
+            <!--List View For Task Items-->
+            <ListView x:Name="TaskListView"
+                      Grid.Row="2"
+                      Background="Transparent"
+                      Margin="0 20"
+                      BorderBrush="Transparent"
+                      ItemsSource="{Binding Tasks}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200" />
+                        <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="100" />
+                        <GridViewColumn Header="Due Date" DisplayMemberBinding="{Binding DueDate}" Width="150" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <!--Task View BG-->
+        <Rectangle Fill="{StaticResource TaskViewBG}"
+                   Grid.Column="2"/>
+
+        <!--Task View Grid-->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="306"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="95"/>
+            </Grid.RowDefinitions>
+
+            <!--Task Details-->
+            <Grid Margin="20 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+
+                <!--Task Title-->
+                <TextBlock Text="Task Title"
+                           Style="{StaticResource Title}"
+                           VerticalAlignment="Center"/>
+
+                <!--Importance Badge-->
+                <Border HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="20 5"
+                        CornerRadius="10"
+                        Background="{StaticResource Importance-Crit}">
+                    <TextBlock Text="Critical"
+                               Foreground="{StaticResource TaskViewBG}"
+                               FontWeight="Bold"/>
+                </Border>
+
+                <!--Description Scroll Bar-->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <!--Description-->
+                    <TextBlock Text="This is a short description..."
+                               FontSize="18"
+                               Foreground="{StaticResource Progress-Deleted}"/>
+                </ScrollViewer>
+
+                <!--Due date-->
+                <TextBlock Text="Due: 09/06/2024"
+                           Grid.Row="2"
+                           Background="{StaticResource DueDate}"
+                           Padding="20 3"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Foreground="White"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,16 @@
+﻿<Window x:Class="Loginfo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Loginfo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="350
+        ">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="100" Margin="548,284,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image HorizontalAlignment="Center" Height="100" Margin="0,51,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox HorizontalAlignment="Left" Margin="169,155,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+
+    </Grid>
+</Window>

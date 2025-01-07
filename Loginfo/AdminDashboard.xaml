@@ -1,0 +1,61 @@
+﻿<Window x:Class="Loginfo.AdminDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Loginfo"
+        mc:Ignorable="d"
+        Title="Admin Dashboard"
+        Height="1080"
+        Width="1440"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+    <Grid>
+        <!-- Define the main layout with two rows: Title Bar (system default) and Main Layout -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+        </Grid.RowDefinitions>
+
+        <!-- Main Layout (Sidebar and Content) -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <!-- Sidebar -->
+                <ColumnDefinition Width="*"/>
+                <!-- Main Content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Background="#FFFFFF" Grid.Column="0">
+                <StackPanel>
+                    <!-- Title Section -->
+                    <TextBlock Text="NewGens" FontSize="34" FontWeight="Bold" Foreground="#333" Margin="20,20,20,40"
+                               HorizontalAlignment="Center"/>
+
+                    <!-- Navigation Buttons -->
+                    <Button x:Name="GeneralButton" Content="General" Tag="General" FontSize="26" FontWeight="Bold"
+                            Foreground="#333" Background="#007BFF" BorderBrush="Transparent" Margin="10,0,10,10"
+                            HorizontalAlignment="Stretch" Click="NavigationButton_Click"/>
+                    <Button x:Name="SettingsButton" Content="Settings" Tag="Settings" FontSize="26" FontWeight="Bold"
+                            Foreground="#333" Background="Transparent" BorderBrush="Transparent" Margin="10,0,10,10"
+                            HorizontalAlignment="Stretch" Click="NavigationButton_Click"/>
+                    <Button x:Name="UsersButton" Content="Users" Tag="Users" FontSize="26" FontWeight="Bold"
+                            Foreground="#333" Background="Transparent" BorderBrush="Transparent" Margin="10,0,10,10"
+                            HorizontalAlignment="Stretch" Click="NavigationButton_Click"/>
+
+                    <!-- Spacer -->
+                    <StackPanel VerticalAlignment="Bottom">
+                        <Button Content="Sign Out" Tag="SignOut" FontSize="26" Foreground="#FF0000" Background="Transparent"
+                                BorderBrush="Transparent" Margin="10,0,10,10" HorizontalAlignment="Stretch" Click="SignOutButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <Border Grid.Column="1" Background="#F9F9F9" Padding="30">
+                <ContentControl x:Name="MainContentControl"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
