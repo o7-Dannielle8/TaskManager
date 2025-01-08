@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Loginfo.View;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,9 +21,8 @@ namespace Loginfo.View
     /// <summary>
     /// Interaction logic for TaskDashboard.xaml
     /// </summary>
-    public partial class TaskDashboard : Window
+    public partial class TaskDashboard : Window, INotifyPropertyChanged
     {
-        // Inline TaskModel class
         public class TaskModel
         {
             public string Title { get; set; }
@@ -29,55 +31,56 @@ namespace Loginfo.View
             public DateTime DueDate { get; set; }
         }
 
-        // ObservableCollection to store and bind tasks
-        public ObservableCollection<TaskModel> Tasks { get; set; }
+        private ObservableCollection<TaskModel> _tasks;
+        public ObservableCollection<TaskModel> Tasks
+        {
+            get => _tasks;
+            set
+            {
+                _tasks = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private TaskModel _selectedTask;
+        public TaskModel SelectedTask
+        {
+            get => _selectedTask;
+            set
+            {
+                _selectedTask = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public TaskDashboard()
         {
             InitializeComponent();
+            DataContext = this;
 
-            // Initialize the Tasks collection
             Tasks = new ObservableCollection<TaskModel>();
-            TaskListView.ItemsSource = Tasks; // Bind the ListView to the Tasks collection
         }
 
-        private void Complete_Button(object sender, RoutedEventArgs e)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Settings settings = new Settings();
-            this.Close();
-            settings.Show();
-        }
-
-        public class TaskList
-        {
-            public string Character { get; set; }
-            public string Task { get; set; }
-            public string Details { get; set; }
-
-        }
-
-        // Method to add a new task to the Tasks collection
-        public void AddTaskToList(TaskModel newTask)
-        {
-            Tasks.Add(newTask); // Add the task to the collection
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Open NewTaskWindow
-            var newTaskWindow = new View.NewTaskWindow
+            var newTaskWindow = new NewTaskWindow
             {
                 TaskAddedCallback = task =>
                 {
-                    AddTaskToList(task); // Add the task to the list
-                                         // Close the NewTaskWindow programmatically
+                    if (task != null)
+                    {
+                        Tasks.Add(task);
+                    }
                 }
             };
-
-            // Open the window as a dialog
             newTaskWindow.ShowDialog();
-
-            // At this point, the NewTaskWindow is already closed.
         }
     }
 }
