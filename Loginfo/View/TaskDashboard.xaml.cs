@@ -82,5 +82,12 @@ namespace Loginfo.View
             };
             newTaskWindow.ShowDialog();
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings();
+            this.Close();
+            settings.Show();
+        }
     }
 }

@@ -26,7 +26,7 @@
             <Button Width="45" Height="45" Margin="0 0 0 20" Background="Transparent" Content="⏱️"/>
         </StackPanel>
 
-        <Button Width="45" Height="45" Margin="0 0 0 20" VerticalAlignment="Bottom" Background="Transparent" Content="⚙️" />
+        <Button Width="45" Height="45" Margin="0 0 0 20" VerticalAlignment="Bottom" Background="Transparent" Content="⚙️" Click="SettingsButton_Click" />
 
         <!--Task List BG-->
         <Rectangle Fill="#F0F4F8" Grid.Column="1" />
